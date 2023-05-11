@@ -1,0 +1,47 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# Mac OS X
+.DS_Store
+._.*
+._*
+
+# Ignore local editor
+.project
+.settings
+/.idea
+/.vscode
+*.swp
+tags
+nbproject/*
+
+# Windows
+Thumbs.db
+
+auth.json
+npm-debug.log
+yarn-error.log
+
+.env
+.env.backup
+phpunit.xml
+.phpunit.result.cache
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
+
+config/version.yml
+
+package-lock.json
+composer.phar
+composer.lock
+yarn.lock
+
+_ide_helper.php
+_ide_helper_models.php
+.phpstorm.meta.php
+lighthouse-audit*
+.nova
+
+/node_modules
+/vendor
+/packages
