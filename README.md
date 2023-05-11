@@ -388,9 +388,7 @@ new Tabs('JSON', [
 ![screenshot of field](screenshots/field-dark.png)
 ![screenshot of field](screenshots/field-detail.png)
 ![screenshot of field](screenshots/field-index.png)
-![screenshot of field](screenshots/field-index2.png)
-![screenshot of field](screenshots/field-with-properties.png)
-![screenshot of field](screenshots/field-properties.png)
+![screenshot of field](screenshots/field-mobile.png)
 
 ## Credits
 
