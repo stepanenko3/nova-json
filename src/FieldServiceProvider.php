@@ -1,6 +1,6 @@
 <?php
 
-namespace Stepanenko3\NovaJSon;
+namespace Stepanenko3\NovaJson;
 
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;
