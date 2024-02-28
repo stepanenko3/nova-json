@@ -1,5 +1,5 @@
 {
-    "version": "4.0.0",
+    "version": "4.0.1",
     "name": "stepanenko3/nova-json",
     "description": "Nova json field to spread a json column throughout multiple fields.",
     "type": "package",
