@@ -107,7 +107,8 @@ export default {
         },
 
         update(attribute, index, originalAttribute) {
-            this.value[index][originalAttribute] = this.fieldRefs[attribute].value;
+            this.value[index][originalAttribute] =
+                this.fieldRefs[attribute].value;
             this.emitChange();
         },
 
