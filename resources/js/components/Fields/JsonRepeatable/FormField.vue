@@ -55,11 +55,9 @@ import {
    HandlesValidationErrors,
    mapProps,
 } from 'laravel-nova'
-// import TopBar from '../../Partials/TopBar.vue'
 import { ref } from 'vue'
 
 export default {
-   // components: [TopBar],
    mixins: [DependentFormField, HandlesValidationErrors],
 
    props: {
@@ -118,6 +116,8 @@ export default {
       },
 
       emitChange() {
+         console.log(this.value);
+         
          if (this.field) {
             this.emitFieldValueChange(this.field.attribute, this.value)
          }

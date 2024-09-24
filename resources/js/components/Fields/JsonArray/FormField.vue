@@ -7,7 +7,7 @@
    >
       <template #field>
          <div
-            class="flex flex-col md:flex-row border border-gray-200 dark:border-gray-700 rounded-lg mb-4"
+            class="flex flex-column flex-col  border border-gray-200 dark:border-gray-700 rounded-lg mb-4"
             v-for="(row, index) of rows"
          >
             <TopBar :index="index" :title="field.name" @deleteRow="deleteRow" />
@@ -44,13 +44,10 @@
 <script>
 import { DependentFormField, HandlesValidationErrors } from 'laravel-nova'
 import { ref } from 'vue'
-import TopBar from '../../Partials/TopBar.vue'
 import uniqueId from 'lodash/uniqueId'
 
 export default {
-   components: [TopBar],
    mixins: [DependentFormField, HandlesValidationErrors],
-
    props: ['resourceName', 'resourceId', 'field'],
 
    data: () => ({
