@@ -2,8 +2,7 @@ let mix = require('laravel-mix')
 
 require('./nova.mix')
 
-mix
-  .setPublicPath('dist')
-  .js('resources/js/field.js', 'js')
-  .vue({ version: 3 })
-  .nova('stepanenko3/nova-json')
+mix.vue({ version: 3 })
+   .setPublicPath('dist')
+   .js('resources/js/field.js', 'js')
+   .nova('stepanenko3/nova-json')
