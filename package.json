@@ -11,20 +11,22 @@
     "nova:install": "npm --prefix='../../vendor/laravel/nova' ci"
   },
   "devDependencies": {
-    "@vue/compiler-sfc": "^3.2.22",
-    "form-backend-validation": "^2.3.3",
+    "@vue/compiler-sfc": "^3.5.8",
+    "form-backend-validation": "^2.4.0",
     "laravel-mix": "^6.0.41",
     "lodash": "^4.17.21",
-    "postcss": "^8.3.11",
-    "vue-loader": "^16.8.3"
+    "postcss": "^8.4.47",
+    "vue-loader": "^17.4.2"
   },
   "dependencies": {
     "dot-object": "^2.1.4",
+    "laravel-nova": "^1.12.3",
     "luxon": "^3.3.0",
     "mime": "^3.0.0",
     "object-to-formdata": "^4.4.2",
     "sortablejs": "^1.15.0",
     "toastedjs": "^0.0.2",
-    "uniqid": "^5.4.0"
+    "uniqid": "^5.4.0",
+    "vue": "^3.5.8"
   }
 }

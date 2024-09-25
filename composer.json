@@ -1,40 +1,42 @@
 {
-    "name": "stepanenko3/nova-json",
-    "description": "Nova json field to spread a json column throughout multiple fields.",
-    "type": "package",
-    "license": "MIT",
-    "keywords": [
-        "laravel",
-        "nova",
-        "json",
-        "field"
-    ],
-    "authors": [
-        {
-            "name": "Artem Stepanenko",
-            "email": "stpnnk.artem@gmail.com"
-        }
-    ],
-    "require": {
-        "php": ">=8.0",
-        "laravel/nova": "^4.0"
-    },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://laravel-nova.site"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "Stepanenko3\\NovaJson\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Stepanenko3\\NovaJson\\FieldServiceProvider"
-            ]
-        }
-    }
+   "name": "stepanenko3/nova-json",
+   "description": "Nova json field to spread a json column throughout multiple fields.",
+   "type": "package",
+   "license": "MIT",
+   "keywords": [
+      "laravel",
+      "nova",
+      "json",
+      "field"
+   ],
+   "authors": [
+      {
+         "name": "Artem Stepanenko",
+         "email": "stpnnk.artem@gmail.com"
+      }
+   ],
+   "require": {
+      "php": ">=8.0",
+      "laravel/nova": "^4.0"
+   },
+   "repositories": [
+      {
+         "type": "composer",
+         "url": "https://laravel-nova.site"
+      }
+   ],
+   "autoload": {
+      "psr-4": {
+         "Stepanenko3\\NovaJson\\": "src/"
+      }
+   },
+   "extra": {
+      "laravel": {
+         "providers": [
+            "Stepanenko3\\NovaJson\\FieldServiceProvider"
+         ]
+      }
+   },
+   "minimum-stability": "dev",
+   "prefer-stable": true
 }
