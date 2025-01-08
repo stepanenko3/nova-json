@@ -96,7 +96,6 @@ export default {
 
         addRow() {
             this.value.push({});
-
             this.emitChange();
         },
 
@@ -108,10 +107,8 @@ export default {
         },
 
         update(attribute, index, originalAttribute) {
-            console.log(attribute, index, originalAttribute, this.fieldRefs[attribute].value);
             this.value[index][originalAttribute] =
                 this.fieldRefs[attribute].value;
-
             this.emitChange();
         },
 
@@ -134,9 +131,12 @@ export default {
                 const fields = [];
 
                 this.currentField.fields.map((fieldPayload) => {
+                    const currentFieldValue = fieldPayload.attribute.split('->').reduce((o,i)=> o[i]??'', value);
+                    this.value[index][fieldPayload.attribute] = currentFieldValue;
+
                     const field = {
                         ...fieldPayload,
-                        value: value[fieldPayload.attribute] || "",
+                        value: currentFieldValue,
                         originalAttribute: fieldPayload.attribute,
                         validationKey: `${this.currentField.validationKey}.${index}.${fieldPayload.attribute}`,
                         attribute: `${this.currentField.attribute}[${index}][${fieldPayload.attribute}]`,
