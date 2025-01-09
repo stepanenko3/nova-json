@@ -23,7 +23,7 @@ class JsonRepeatable extends Field
         return $this;
     }
 
-    protected function resolveAttribute($resource, $attribute): mixed
+    protected function resolveAttribute($resource, string $attribute): mixed
     {
         return Util::value(data_get($resource, str_replace('->', '.', $attribute)));
     }
