@@ -23,7 +23,7 @@ class JsonRepeatable extends Field
         return $this;
     }
 
-    protected function resolveAttribute($resource, $attribute)
+    protected function resolveAttribute($resource, string $attribute): mixed
     {
         return Util::value(data_get($resource, str_replace('->', '.', $attribute)));
     }
@@ -65,7 +65,7 @@ class JsonRepeatable extends Field
         }
     }
 
-    public function getRules(NovaRequest $request, string $nestedAttribute = null)
+    public function getRules(NovaRequest $request, string $nestedAttribute = null): array
     {
         $rules = [
             $nestedAttribute ?? $this->attribute => is_callable($this->rules) ? call_user_func($this->rules, $request) : $this->rules,
