@@ -27,18 +27,21 @@
                     @change="() => update(row.attribute, index)"
                 />
 
-                <div class="mt-1 md:mt-0 pb-5 px-6 md:px-8 md:py-5">
-                    <DangerButton @click="() => deleteRow(index)" type="button">
-                        <Icon type="trash" />
-                    </DangerButton>
+                <div class="py-5 px-6 md:px-8">
+                    <Button
+                        type="button"
+                        state="danger"
+                        leading-icon="trash"
+                        @click="() => deleteRow(index)"
+                    />
                 </div>
             </div>
 
             <div
-                class="px-6 md:px-8 md:mt-0 cursor-pointer md:py-5 border-2 font-bold border-dashed border-gray-200 dark:border-gray-700 hover:border-primary-500 rounded-lg"
+                class="flex items-center py-5 md:py-2 px-6 md:px-8 md:mt-0 cursor-pointer border-2 font-bold border-dashed border-gray-200 dark:border-gray-700 hover:border-primary-500 rounded-lg"
                 @click="addRow"
             >
-                <Icon type="plus-circle" class="mr-2" />
+                <Icon name="plus-circle" class="mr-2" />
 
                 Add Row
             </div>
@@ -47,12 +50,15 @@
 </template>
 
 <script>
+
+import { Button, Icon } from 'laravel-nova-ui'
 import { DependentFormField, HandlesValidationErrors } from "laravel-nova";
 import { ref } from "vue";
 import uniqueId from "lodash/uniqueId"
 
 export default {
     mixins: [DependentFormField, HandlesValidationErrors],
+    components: { Button, Icon },
 
     props: ["resourceName", "resourceId", "field"],
 
