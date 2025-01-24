@@ -36,7 +36,7 @@ class JsonArray extends Field
         }
     }
 
-    public function getRules(NovaRequest $request)
+    public function getRules(NovaRequest $request): array
     {
         return [
             $this->attribute => is_callable($this->rules) ? call_user_func($this->rules, $request) : $this->rules,
