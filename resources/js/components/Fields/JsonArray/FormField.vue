@@ -9,6 +9,7 @@
             <div
                 class="flex flex-col md:flex-row border border-gray-200 dark:border-gray-700 rounded-lg mb-4"
                 v-for="(row, index) of rows"
+                :key="row.rowKey"
             >
                 <component
                     class="flex-grow"
@@ -21,10 +22,10 @@
                     :errors="errors"
                     :ref="
                         (el) => {
-                            fieldRefs[row.attribute] = el;
+                            fieldRefs[row.rowKey] = el;
                         }
                     "
-                    @change="() => update(row.attribute, index)"
+                    @change="() => update(row.rowKey, index)"
                 />
 
                 <div class="py-5 px-6 md:px-8">
@@ -68,40 +69,57 @@ export default {
     }),
 
     setup() {
-        const fieldRefs = ref([]);
+        const fieldRefs = ref({});
+
+        // One stable id per row, kept in step with `value`. Rows are keyed by it so
+        // Vue removes the deleted row's component rather than the last one, and child
+        // refs are stored under it so they do not shift when row indexes change.
+        const rowKeys = [];
+
         return {
             fieldRefs,
+            rowKeys,
         };
     },
 
     methods: {
         fill(formData) {
             this.value.map((value, index) => {
-                const attribute = `${this.currentField.attribute}[${index}]`;
+                const fieldRef = this.fieldRefs[this.rowKeys[index]];
 
-                if (this.fieldRefs[attribute]?.fill) {
-                    this.fieldRefs[attribute].fill(formData);
+                if (fieldRef?.fill) {
+                    fieldRef.fill(formData);
                 }
             });
         },
 
         addRow() {
+            this.rowKeys.push(uniqueId("row-"));
             this.value.push("");
 
             this.emitChange();
         },
 
         deleteRow(index) {
-            delete this.fieldRefs[this.value[index]];
+            const [rowKey] = this.rowKeys.splice(index, 1);
+            delete this.fieldRefs[rowKey];
             this.value.splice(index, 1);
 
             this.emitChange();
         },
 
-        update(attribute, index) {
-            this.value[index] = this.fieldRefs[attribute].value;
+        update(rowKey, index) {
+            this.value[index] = this.fieldRefs[rowKey].value;
 
             this.emitChange();
+        },
+
+        syncRowKeys() {
+            while (this.rowKeys.length < this.value.length) {
+                this.rowKeys.push(uniqueId("row-"));
+            }
+
+            this.rowKeys.length = this.value.length;
         },
 
         emitChange() {
@@ -117,10 +135,11 @@ export default {
                 this.value = [];
             }
 
-            this.fieldRefs = [];
+            this.syncRowKeys();
 
             return this.value.map((value, index) => ({
                 ...this.currentField.field,
+                rowKey: this.rowKeys[index],
                 value: value,
                 originalAttribute: this.currentField.field.attribute,
                 validationKey: `${this.currentField.validationKey}.${index}`,

@@ -9,9 +9,11 @@
             <div
                 class="relative border border-gray-200 dark:border-gray-700 rounded-lg mb-4"
                 v-for="(row, index) in rows"
+                :key="row.rowKey"
             >
                 <component
-                    v-for="rowField in row"
+                    v-for="rowField in row.fields"
+                    :key="rowField.originalAttribute"
                     :is="'form-' + rowField.component"
                     :resourceName="resourceName"
                     :resourceId="resourceId"
@@ -21,13 +23,13 @@
                     :errors="errors"
                     :ref="
                         (el) => {
-                            fieldRefs[rowField.attribute] = el;
+                            fieldRefs[refKey(row.rowKey, rowField.originalAttribute)] = el;
                         }
                     "
                     @change="
                         () =>
                             update(
-                                rowField.attribute,
+                                row.rowKey,
                                 index,
                                 rowField.originalAttribute
                             )
@@ -64,6 +66,7 @@ import {
     mapProps,
 } from "laravel-nova";
 import { ref } from "vue";
+import uniqueId from "lodash/uniqueId";
 
 export default {
     mixins: [DependentFormField, HandlesValidationErrors],
@@ -83,10 +86,16 @@ export default {
     }),
 
     setup() {
-        const fieldRefs = ref([]);
+        const fieldRefs = ref({});
+
+        // One stable id per row, kept in step with `value`. Rows are keyed by it so
+        // Vue removes the deleted row's components rather than the last row's, and
+        // child refs are stored under it so they do not shift when row indexes change.
+        const rowKeys = [];
 
         return {
             fieldRefs,
+            rowKeys,
         };
     },
 
@@ -94,34 +103,51 @@ export default {
         fill(formData) {
             this.value.map((value, index) => {
                 Object.keys(value).map((key) => {
-                    const attribute = `${this.currentField.attribute}[${index}][${key}]`;
+                    const fieldRef = this.fieldRefs[this.refKey(this.rowKeys[index], key)];
 
-                    if (this.fieldRefs[attribute]?.fill) {
-                        this.fieldRefs[attribute].fill(formData);
+                    if (fieldRef?.fill) {
+                        fieldRef.fill(formData);
                     }
                 });
             });
         },
 
         addRow() {
+            this.rowKeys.push(uniqueId("row-"));
             this.value.push({});
 
             this.emitChange();
         },
 
         deleteRow(index) {
-            delete this.fieldRefs[this.value[index]];
+            const [rowKey] = this.rowKeys.splice(index, 1);
+
+            this.currentField.fields.forEach((fieldPayload) => {
+                delete this.fieldRefs[this.refKey(rowKey, fieldPayload.attribute)];
+            });
+
             this.value.splice(index, 1);
 
             this.emitChange();
         },
 
-        update(attribute, index, originalAttribute) {
-            console.log(attribute, index, originalAttribute, this.fieldRefs[attribute].value);
+        update(rowKey, index, originalAttribute) {
             this.value[index][originalAttribute] =
-                this.fieldRefs[attribute].value;
+                this.fieldRefs[this.refKey(rowKey, originalAttribute)].value;
 
             this.emitChange();
+        },
+
+        refKey(rowKey, originalAttribute) {
+            return `${rowKey}.${originalAttribute}`;
+        },
+
+        syncRowKeys() {
+            while (this.rowKeys.length < this.value.length) {
+                this.rowKeys.push(uniqueId("row-"));
+            }
+
+            this.rowKeys.length = this.value.length;
         },
 
         emitChange() {
@@ -137,7 +163,7 @@ export default {
                 this.value = [];
             }
 
-            this.fieldRefs = [];
+            this.syncRowKeys();
 
             return this.value.map((value, index) => {
                 const fields = [];
@@ -169,7 +195,10 @@ export default {
                     fields.push(field);
                 });
 
-                return fields;
+                return {
+                    rowKey: this.rowKeys[index],
+                    fields,
+                };
             });
         },
     },
